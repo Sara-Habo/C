@@ -281,19 +281,119 @@ void Transact(CList_t* Pl_transact)
 
 void TransactList(CList_t* Pl_TransactList)
 {
-    uint32_t CustID_TransactList;
+uint32_t CustID_TransactList;
     int32_t position_TransactList;
     uint8_t flage_TransactList;
-    printf("Please Enter the ID of customer:");
+    printf("\nPlease Enter the ID of customer:");
     scanf("%u",&CustID_TransactList);
 
     flage_TransactList=SearchNode(Pl_TransactList,CustID_TransactList,&position_TransactList);
     if(0==flage_TransactList)
     {
-        printf("Customer not found.Invalid ID\n");
+        printf("\nCUSTOMER NOT FOUND.INVALID ID\n");
     }
     else
     {
-        TListTraverse(Pl_TransactList,position_TransactList);
+        CListNode_t* temp_customer=Pl_TransactList->top;
+
+        uint32_t itr_TList;
+        int32_t pos1_TList;
+        int32_t pos2_TList;
+        TListNode_t* Pi_T;
+        TListNode_t* Pj_T;
+        int32_t k;
+
+        for(k=0;k<position_TransactList;k++)
+        {
+            temp_customer=temp_customer->next; /*make it point to needed customer*/
+        }
+
+        TList_t* PTList=&(temp_customer->entry.THistory);/*Get transact List of the customer*/
+        TListNode_t* temp_Tlist=PTList->top;
+
+        for(itr_TList=0; itr_TList<PTList->TSize-1;itr_TList++)
+        {
+            fflush(stdout);
+            //printf("iteration %d\n",itr_TList);
+            pos1_TList=0;
+            for(pos2_TList=1;pos2_TList<PTList->TSize-itr_TList;pos2_TList++)
+            {
+              Pi_T=PTList->top;
+              for(k=0;k<pos2_TList-1;k++)
+              {
+                  Pi_T=Pi_T->Tnext; /*make pi point to pos1*/
+              }
+              Pj_T=Pi_T->Tnext;
+              if(Pi_T->TEntry.TDate.year < Pj_T->TEntry.TDate.year) /*compare years*/
+              {
+                  fflush(stdout);
+                  //printf("year swap %d ,%d \n",pos1_TList,pos2_TList);
+                  SwapTNodes(PTList,pos1_TList,pos2_TList);
+              }
+              else if(Pi_T->TEntry.TDate.year == Pj_T->TEntry.TDate.year)/*same year so compare months*/
+              {
+                    if(Pi_T->TEntry.TDate.month < Pj_T->TEntry.TDate.month)
+                    {
+                        fflush(stdout);
+                       // printf("month swap %d ,%d \n",pos1_TList,pos2_TList);
+                        SwapTNodes(PTList,pos1_TList,pos2_TList);
+                    }
+                    else if(Pi_T->TEntry.TDate.month == Pj_T->TEntry.TDate.month) /*same month so compare day*/
+                    {
+                        if(Pi_T->TEntry.TDate.day < Pj_T->TEntry.TDate.day)
+                        {
+                            fflush(stdout);
+                            //printf("day swap %d ,%d \n",pos1_TList,pos2_TList);
+                            SwapTNodes(PTList,pos1_TList,pos2_TList);
+                        }
+                        else
+                        {
+                            /*Already sorted according to date
+                                    Do nothing
+                            */
+                        }
+
+                    }
+                    else
+                    {
+                        /*Already sorted according to month
+                                Do nothing
+                        */
+                    }
+
+              }
+              else
+              {
+                  /*Already sorted according to year.
+                     Do nothing.
+                  */
+              }
+              pos1_TList++;
+            }
+        }
+
+    //printf("|----------|-----------------------\n");
+    //printf("|Date      |Amount                 \n");
+    //printf("|----------|-----------------------\n");
+
+    char_t sign;
+    temp_Tlist=PTList->top;
+        while(temp_Tlist)
+        {
+            if(1==temp_Tlist->TEntry.WithdrawFlage)
+            {
+                sign='-';
+            }
+            else
+            {
+                sign='+';
+            }
+            printf("Date:%u-%u-%u \n",temp_Tlist->TEntry.TDate.day,temp_Tlist->TEntry.TDate.month,temp_Tlist->TEntry.TDate.year);
+            printf("Deposit amount:(%c)%ld \n",sign,temp_Tlist->TEntry.TAmount);
+            printf("---------------------------------------------------\n");
+            //printf("|%u-%u-%u  |(%c)%ld                \n",temp_Tlist->TEntry.TDate.day,temp_Tlist->TEntry.TDate.month,temp_Tlist->TEntry.TDate.year,sign,temp_Tlist->TEntry.TAmount);
+            temp_Tlist=temp_Tlist->Tnext;
+
+        }
     }
 }

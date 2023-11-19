@@ -118,3 +118,29 @@ void TListTraverse (const CList_t* Pl_TInsert,int32_t position_transact)
         }
     }
 }
+
+void SwapTNodes(TList_t* Pl_TSwap, int32_t pos1,int32_t pos2)
+{
+    TListNode_t* temp_swap;
+    if(0==pos1)/*we want to swap first node(0) with second node(1)*/
+    {
+        temp_swap=Pl_TSwap->top; /*make temp points to node 0*/
+        Pl_TSwap->top=temp_swap->Tnext; /*make top points to node 1*/
+        temp_swap->Tnext=temp_swap->Tnext->Tnext; /*make node 0 point to node 2 */
+        Pl_TSwap->top->Tnext=temp_swap;
+    }
+    else
+    {
+        int k;
+        TListNode_t* temp=Pl_TSwap->top;
+        for(k=0;k<pos1-1;k++)/* make temp points to node previous to pos1*/
+        {
+            temp=temp->Tnext;
+        }
+         temp_swap=temp->Tnext; /*make temp_swap points to pos1*/
+         temp->Tnext=temp_swap->Tnext; /*make previous to pos1 point to pos2*/
+         temp_swap->Tnext=temp_swap->Tnext->Tnext; /*make pos1 points to next of pos2*/
+         temp->Tnext->Tnext=temp_swap; /*make pos2 points to pos1*/
+    }
+}
+
