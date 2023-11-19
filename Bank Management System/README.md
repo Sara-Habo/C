@@ -16,10 +16,11 @@ You're sections headers will be used to reference location of destination.
 ## Demo
 #### Main Meneu
 The following meneu appears to the customer to choose one of the mention features above:
-<img src="https://github.com/Sara-Habo/C/blob/main/Demo_Images/Menue_list.jpg"/>
+<img src="https://github.com/Sara-Habo/C/blob/main/Bank%20Management%20System/Demo_Images/Menue_list.jpg"/>
 
 #### Sorted Customer List
-<img src="https://github.com/Sara-Habo/C/blob/main/Demo_Images/customer_list.jpg"/>
+<img src="https://github.com/Sara-Habo/C/blob/main/Bank%20Management%20System/Demo_Images/customer_list.jpg"/>
 
 #### Sorted Transaction List
-<img src="https://github.com/Sara-Habo/C/blob/main/Demo_Images/transact_list.jpg"/>
+<img src="https://github.com/Sara-Habo/C/blob/main/Bank%20Management%20System/Demo_Images/transact_list.jpg"/>
+
